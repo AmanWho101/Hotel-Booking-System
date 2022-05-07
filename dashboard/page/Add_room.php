@@ -129,7 +129,6 @@
                                                     $rslt = mysqli_query($conn, $sql);
                                                     if ($rslt === true) {
 
-
                                                         // time to copy the image to new destination
                                                         if (file_exists($img_file)) {
                                                             $alert = '<div class="alert alert-primary" role="alert">
@@ -142,10 +141,6 @@
                                                                   </div>';
                                                             }
                                                         }
-
-
-
-
                                                         mysqli_close($conn);
                                                     } else {
                                                         $alert = '<div class="alert alert-warning" role="alert">

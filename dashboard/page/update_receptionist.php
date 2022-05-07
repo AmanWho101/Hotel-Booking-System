@@ -97,6 +97,55 @@
         </li>
       </ul>
       </nav>
+
+<?php
+
+include_once "../../config.php";
+
+$id = 1;
+$sql = "select * from `reception` where recepid='$id'";
+$rslt = mysqli_query($conn,$sql);
+
+$row = mysqli_fetch_assoc($rslt);
+  
+
+    $fname = $row['fname'];
+    $lname = $row['lname'];
+    $email = $row['email'];
+    $password = $row['passwords'];
+  
+
+
+
+
+if($_SERVER["REQUEST_METHOD"]== "POST"){
+  if(isset($_POST["submit"])){
+    $uname = $_POST["uname"];
+    $lname = $_POST["lname"];
+    $email = $_POST["email"];
+    $password = $_POST["password"];
+
+    $sql = "select adminid from admin";
+    $rslt = $conn->query($sql);
+    if($rslt->num_rows > 0){
+      if($row = $rslt->fetch_assoc()){
+        $adminid = $row['adminid'];
+        if(!empty($id)){
+          
+          $sql = "UPDATE reception SET recepid = '$id', adminid = '$adminid', fname = '$uname', lname = '$lname', email = '$email', passwords = '$password' WHERE recepid = '$id'";
+          $rslt = $conn->query($sql);
+          header('location:update_receptionist.php');
+        }else{
+          echo "receptionist id is empty";
+        }
+        }
+    }
+
+  }
+}
+
+?>
+
       <!-- partial -->
       <div class="main-panel">        
         <div class="content-wrapper">
@@ -106,32 +155,29 @@
                 <div class="card-body">
                   <h4 class="card-title">Register Receptionist</h4>
             
-                  <form class="forms-sample">
+                  <form <?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?> method="POST">
                     <div class="form-group">
-                      <label for="exampleInputUsername1">Username</label>
-                      <input type="text" class="form-control" id="exampleInputUsername1" placeholder="Username">
+                      <label >Username</label>
+                      <input name="uname" type="text" class="form-control" value="<?php echo $fname; ?>" />
                     </div>
                     <div class="form-group">
-                      <label for="exampleInputUsername1">Last Name</label>
-                      <input type="text" class="form-control" id="exampleInputUsername1" placeholder="Username">
+                      <label >Last Name</label>
+                      <input name="lname" type="text" class="form-control"  value="<?php echo $lname; ?>">
                     </div>
                     <div class="form-group">
-                      <label for="exampleInputEmail1">Email address</label>
-                      <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Email">
+                      <label >Email address</label>
+                      <input name="email" type="email" class="form-control"  value="<?php echo $email; ?>">
                     </div>
                     <div class="form-group">
-                      <label for="exampleInputPassword1">Password</label>
-                      <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                      <label >Password</label>
+                      <input name="password" type="password" class="form-control"   value="<?php echo $password; ?>">
                     </div>
-                    <button type="submit" class="btn btn-primary me-2">Submit</button>
+                    <button name="submit" type="submit" class="btn btn-primary me-2">Submit</button>
                   
                   </form>
                 </div>
               </div>
-            </div>
-            
-           
-            
+            </div>            
           </div>
         </div>
         <!-- content-wrapper ends -->
