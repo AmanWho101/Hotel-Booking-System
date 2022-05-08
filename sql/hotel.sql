@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: May 03, 2022 at 01:50 PM
+-- Generation Time: May 07, 2022 at 02:32 PM
 -- Server version: 5.7.31
 -- PHP Version: 7.3.21
 
@@ -120,7 +120,7 @@ CREATE TABLE IF NOT EXISTS `reception` (
 --
 
 INSERT INTO `reception` (`recepid`, `adminid`, `fname`, `lname`, `email`, `passwords`) VALUES
-(1, 1, 'receptionist', 'data clerk', 'receptionist@admin.com', 'admin123@.gimal.com');
+(1, 1, 'receptionist ', 'updated', 'amleaz2005@gmail.com', '123456');
 
 -- --------------------------------------------------------
 
@@ -178,7 +178,7 @@ CREATE TABLE IF NOT EXISTS `room` (
 --
 
 INSERT INTO `room` (`roomid`, `adminid`, `roomtype`, `roomNo`, `roomFloor`, `roomPrice`, `images`) VALUES
-(15, 1, 'Economy_Room', 2, 5, 5000, 'room3.jpg'),
+(15, 1, 'Double_Delux_Room', 2, 52, 5000, 'testtimonial-1.jpg'),
 (14, 1, 'Honeymoon_Suit', 2, 5, 1000, 'room4.jpg'),
 (13, 1, 'Single_Deluxe_Room', 1, 1, 1000, 'room4.jpg');
 COMMIT;
