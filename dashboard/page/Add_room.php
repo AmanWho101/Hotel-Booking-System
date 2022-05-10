@@ -1,3 +1,64 @@
+<?php
+include "../../config.php";
+$alert = '';
+
+
+session_start();
+if (!empty($_SESSION['name'])) {
+    $username = $_SESSION['name'];
+
+
+
+    if ($_SERVER["REQUEST_METHOD"] === "POST") {
+        if (isset($_POST["submit"])) {
+            $roomtype = $_POST['roomtype'];
+            $roomNo = $_POST["roomN"];
+            $roomF = $_POST["roomF"];
+            $roomP = $_POST["roomP"];
+            $roomImg = $_FILES['img']['name'];
+            $target_dir = "../Himages/";
+            $img_file = $target_dir . basename($roomImg);
+            $img_filetype = strtolower(pathinfo($img_file, PATHINFO_EXTENSION));
+            $img_file_tmp = $_FILES["img"]["tmp_name"];
+
+            $sql = "select adminid from admin";
+            $rsl = mysqli_query($conn, $sql);
+            if (mysqli_num_rows($rsl) > 0) {
+                while ($row = mysqli_fetch_assoc($rsl)) {
+                    $adminid = $row['adminid'];
+                    $sql = "INSERT INTO room (adminid, roomtype, roomNo, roomFloor, roomPrice, images)
+                                                             VALUES ('$adminid', '$roomtype', '$roomNo', '$roomF', '$roomP', '$roomImg') ";
+                    $rslt = mysqli_query($conn, $sql);
+                    if ($rslt === true) {
+
+                        // time to copy the image to new destination
+                        if (file_exists($img_file)) {
+                            $alert = '<div class="alert alert-primary" role="alert">
+                                                                Data created succesfull!
+                                                              </div>';
+                        } else {
+                            if (move_uploaded_file($img_file_tmp, $img_file)) {
+                                $alert = '<div class="alert alert-primary" role="alert">
+                                                                    Data created succesfull!
+                                                                  </div>';
+                            }
+                        }
+                        mysqli_close($conn);
+                    } else {
+                        $alert = '<div class="alert alert-warning" role="alert">
+                                                                Data was not created succesfully!
+                                                              <br>' . mysqli_error($conn) . '</div>';
+                        mysqli_close($conn);
+                    }
+                }
+            }
+        }
+    }
+} else {
+    header('location:index.php');
+}
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -26,8 +87,8 @@
         <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
             <div class="navbar-brand-wrapper d-flex justify-content-center">
                 <div class="navbar-brand-inner-wrapper d-flex justify-content-between align-items-center w-100">
-                    <a class="navbar-brand brand-logo" href="../index.html"><img src="../images/logo.svg" alt="logo" /></a>
-                    <a class="navbar-brand brand-logo-mini" href="../index.html"><img src="../images/logo-mini.svg" alt="logo" /></a>
+                    <a class="navbar-brand brand-logo" href="../admin.php"><img src="../images/logo.svg" alt="logo" /></a>
+                    <a class="navbar-brand brand-logo-mini" href="../admin.php"><img src="../images/logo-mini.svg" alt="logo" /></a>
                     <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
                         <span class="mdi mdi-sort-variant"></span>
                     </button>
@@ -39,14 +100,11 @@
                     <li class="nav-item nav-profile dropdown">
                         <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" id="profileDropdown">
 
-                            <span class="nav-profile-name">Louis Barnett</span>
+                            <span class="nav-profile-name"><?php echo $_SESSION['name'] ?></span>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
-                            <a class="dropdown-item">
-                                <i class="mdi mdi-settings text-primary"></i>
-                                Settings
-                            </a>
-                            <a class="dropdown-item">
+
+                            <a href="logout.php" href="logout.php" class="dropdown-item">
                                 <i class="mdi mdi-logout text-primary"></i>
                                 Logout
                             </a>
@@ -64,7 +122,7 @@
             <nav class="sidebar sidebar-offcanvas" id="sidebar">
                 <ul class="nav">
                     <li class="nav-item">
-                        <a class="nav-link" href="../index.html">
+                        <a class="nav-link" href="../admin.php">
                             <i class="mdi mdi-home menu-icon"></i>
                             <span class="menu-title">Dashboard</span>
                         </a>
@@ -77,23 +135,7 @@
                             <span class="menu-title">Add Receptionist</span>
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="update_receptionist.php">
-                            <i class="mdi mdi-pen menu-icon"></i>
-                            <span class="menu-title">Update Receptionist</span>
-                        </a>
-                    </li>
                    
-                    <li class="nav-item">
-                        <a class="nav-link" href="update_room.php">
-                            <i class="mdi mdi-pen">
-                                <i class="mdi mdi-hotel menu-icon"></i></i>
-
-                            <span class="menu-title">Update Room</span>
-                        </a>
-                    </li>
-
-                </ul>
             </nav>
             <!-- partial -->
             <div class="main-panel">
@@ -103,59 +145,6 @@
                             <div class="card">
                                 <div class="card-body">
                                     <h4 class="card-title">Add Room</h4>
-
-                                    <?php
-                                    include "../../config.php";
-                                    $alert = '';
-                                    if ($_SERVER["REQUEST_METHOD"] === "POST") {
-                                        if (isset($_POST["submit"])) {
-                                            $roomtype = $_POST['roomtype'];
-                                            $roomNo = $_POST["roomN"];
-                                            $roomF = $_POST["roomF"];
-                                            $roomP = $_POST["roomP"];
-                                            $roomImg = $_FILES['img']['name'];
-                                            $target_dir = "../Himages/";
-                                            $img_file = $target_dir . basename($roomImg);
-                                            $img_filetype = strtolower(pathinfo($img_file, PATHINFO_EXTENSION));
-                                            $img_file_tmp = $_FILES["img"]["tmp_name"];
-
-                                            $sql = "select adminid from admin";
-                                            $rsl = mysqli_query($conn, $sql);
-                                            if (mysqli_num_rows($rsl) > 0) {
-                                                while ($row = mysqli_fetch_assoc($rsl)) {
-                                                    $adminid = $row['adminid'];
-                                                    $sql = "INSERT INTO room (adminid, roomtype, roomNo, roomFloor, roomPrice, images)
-                                                             VALUES ('$adminid', '$roomtype', '$roomNo', '$roomF', '$roomP', '$roomImg') ";
-                                                    $rslt = mysqli_query($conn, $sql);
-                                                    if ($rslt === true) {
-
-                                                        // time to copy the image to new destination
-                                                        if (file_exists($img_file)) {
-                                                            $alert = '<div class="alert alert-primary" role="alert">
-                                                                Data created succesfull!
-                                                              </div>';
-                                                        } else {
-                                                            if (move_uploaded_file($img_file_tmp, $img_file)) {
-                                                                $alert = '<div class="alert alert-primary" role="alert">
-                                                                    Data created succesfull!
-                                                                  </div>';
-                                                            }
-                                                        }
-                                                        mysqli_close($conn);
-                                                    } else {
-                                                        $alert = '<div class="alert alert-warning" role="alert">
-                                                                Data was not created succesfully!
-                                                              <br>' . mysqli_error($conn) . '</div>';
-                                                        mysqli_close($conn);
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-
-
-                                    ?>
-
                                     <form method="POST" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" enctype="multipart/form-data" class="forms-sample">
                                         <div class="form-group">
                                             <label> <?php echo $alert; ?></label><br />
@@ -242,15 +231,15 @@
     </div>
     <!-- container-scroller -->
     <!-- plugins:js -->
-    <script src="../../vendors/base/vendor.bundle.base.js"></script>
+    <script src="../vendors/base/vendor.bundle.base.js"></script>
     <!-- endinject -->
     <!-- inject:js -->
-    <script src="../../js/off-canvas.js"></script>
-    <script src="../../js/hoverable-collapse.js"></script>
-    <script src="../../js/template.js"></script>
+    <script src="../js/off-canvas.js"></script>
+    <script src="../js/hoverable-collapse.js"></script>
+    <script src="../js/template.js"></script>
     <!-- endinject -->
     <!-- Custom js for this page-->
-    <script src="../../js/file-upload.js"></script>
+    <script src="../js/file-upload.js"></script>
     <!-- End custom js for this page-->
 </body>
 

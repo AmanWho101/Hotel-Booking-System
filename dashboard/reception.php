@@ -1,3 +1,13 @@
+<?php 
+session_start();
+include_once "../config.php";
+if(!empty($_SESSION['name'])){
+  $username = $_SESSION['name'];
+}else{
+  header('location:index.php');
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -37,11 +47,11 @@
         <li class="nav-item nav-profile dropdown">
           <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" id="profileDropdown">
             
-            <span class="nav-profile-name">Louis Barnett</span>
+            <span class="nav-profile-name"><?php echo $username; ?></span>
           </a>
           <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
             
-            <a class="dropdown-item">
+            <a href="logout.php" class="dropdown-item">
               <i class="mdi mdi-logout text-primary"></i>
               Logout
             </a>
@@ -60,7 +70,7 @@
     <nav class="sidebar sidebar-offcanvas" id="sidebar">
       <ul class="nav">
         <li class="nav-item">
-          <a class="nav-link" href="index.html">
+          <a class="nav-link" href="reception.php">
             <i class="mdi mdi-home menu-icon"></i>
             <span class="menu-title">Dashboard</span>
           </a>
@@ -73,12 +83,7 @@
           </a>
         </li>
 
-        <li class="nav-item">
-          <a class="nav-link" href="page/comment.php">
-            <i class="mdi mdi-comment-text menu-icon"></i>
-            <span class="menu-title">View Comment</span>
-          </a>
-        </li>
+       
         
       </ul>
     </nav>
@@ -91,7 +96,7 @@
             <div class="d-flex justify-content-between flex-wrap">
               <div class="d-flex align-items-end flex-wrap">
                 <div class="me-md-3 me-xl-5">
-                  <h2>Welcome back,</h2>
+                  <h2>Welcome back,<?php echo $username; ?></h2>
                   <p class="mb-md-0">Your analytics dashboard template.</p>
                 </div>
                 <div class="d-flex">
@@ -106,12 +111,9 @@
         </div>
       </div>
 
-      
       <div class="content-wrapper">
-
-        <!-- table starts -->
-
-        <div class="row">
+      
+      <div class="row">
           <div class="col-md-12 stretch-card">
             <div class="card">
               <div class="card-body">
@@ -121,78 +123,31 @@
                     <thead>
                       <tr>
                         <th>Name</th>
-                        <th>Status report</th>
-                        <th>Office</th>
-                        <th>Price</th>
-                        <th>Date</th>
-                        <th>Gross amount</th>
+                        <th>Last Name</th>
+                        <th>country</th>
+                        <th>city</th>
+                        <th>email</th>
+                        <th>Phone Number</th>
+                        <th>Password</th>
+                        
                       </tr>
                     </thead>
                     <tbody>
-                      <tr>
-                        <td>Jeremy Ortega</td>
-                        <td>Levelled up</td>
-                        <td>Catalinaborough</td>
-                        <td>$790</td>
-                        <td>06 Jan 2018</td>
-                        <td>$2274253</td>
-                      </tr>
-                      <tr>
-                        <td>Alvin Fisher</td>
-                        <td>Ui design completed</td>
-                        <td>East Mayra</td>
-                        <td>$23230</td>
-                        <td>18 Jul 2018</td>
-                        <td>$83127</td>
-                      </tr>
-                      <tr>
-                        <td>Emily Cunningham</td>
-                        <td>support</td>
-                        <td>Makennaton</td>
-                        <td>$939</td>
-                        <td>16 Jul 2018</td>
-                        <td>$29177</td>
-                      </tr>
-                      <tr>
-                        <td>Minnie Farmer</td>
-                        <td>support</td>
-                        <td>Agustinaborough</td>
-                        <td>$30</td>
-                        <td>30 Apr 2018</td>
-                        <td>$44617</td>
-                      </tr>
-                      <tr>
-                        <td>Betty Hunt</td>
-                        <td>Ui design not completed</td>
-                        <td>Lake Sandrafort</td>
-                        <td>$571</td>
-                        <td>25 Jun 2018</td>
-                        <td>$78952</td>
-                      </tr>
-                      <tr>
-                        <td>Myrtie Lambert</td>
-                        <td>Ui design completed</td>
-                        <td>Cassinbury</td>
-                        <td>$36</td>
-                        <td>05 Nov 2018</td>
-                        <td>$36422</td>
-                      </tr>
-                      <tr>
-                        <td>Jacob Kennedy</td>
-                        <td>New project</td>
-                        <td>Cletaborough</td>
-                        <td>$314</td>
-                        <td>12 Jul 2018</td>
-                        <td>$34167</td>
-                      </tr>
-                      <tr>
-                        <td>Ernest Wade</td>
-                        <td>Levelled up</td>
-                        <td>West Fidelmouth</td>
-                        <td>$484</td>
-                        <td>08 Sep 2018</td>
-                        <td>$50862</td>
-                      </tr>
+                    <?php
+                        $sql = 'select * from customer';
+                        $rslt = $conn->query($sql);
+                        while($row = $rslt->fetch_assoc()){
+                          echo '<tr><td>'.$row['fname'].'</td>
+                          <td>'.$row['lname'].'</td>
+                          <td>'.$row['country'].'</td>
+                          <td>'.$row['city'].'</td>
+                          <td>'.$row['email'].'</td>
+                          <td>'.$row['phone'].'</td>
+                          <td>'.$row['passwords'].'</td>
+                         </tr>';
+                        }
+                        ?>
+                        
                     </tbody>
                   </table>
                 </div>
@@ -218,79 +173,34 @@
                   <table id="recent-purchases-listing" class="table">
                     <thead>
                       <tr>
-                        <th>Name</th>
-                        <th>Status report</th>
-                        <th>Office</th>
+                        <th>Customer Name</th>
+                        <th>Arrival</th>
+                        <th>Departure</th>
+                        <th>Room</th>
                         <th>Price</th>
-                        <th>Date</th>
-                        <th>Gross amount</th>
+                        
                       </tr>
                     </thead>
                     <tbody>
-                      <tr>
-                        <td>Jeremy Ortega</td>
-                        <td>Levelled up</td>
-                        <td>Catalinaborough</td>
-                        <td>$790</td>
-                        <td>06 Jan 2018</td>
-                        <td>$2274253</td>
-                      </tr>
-                      <tr>
-                        <td>Alvin Fisher</td>
-                        <td>Ui design completed</td>
-                        <td>East Mayra</td>
-                        <td>$23230</td>
-                        <td>18 Jul 2018</td>
-                        <td>$83127</td>
-                      </tr>
-                      <tr>
-                        <td>Emily Cunningham</td>
-                        <td>support</td>
-                        <td>Makennaton</td>
-                        <td>$939</td>
-                        <td>16 Jul 2018</td>
-                        <td>$29177</td>
-                      </tr>
-                      <tr>
-                        <td>Minnie Farmer</td>
-                        <td>support</td>
-                        <td>Agustinaborough</td>
-                        <td>$30</td>
-                        <td>30 Apr 2018</td>
-                        <td>$44617</td>
-                      </tr>
-                      <tr>
-                        <td>Betty Hunt</td>
-                        <td>Ui design not completed</td>
-                        <td>Lake Sandrafort</td>
-                        <td>$571</td>
-                        <td>25 Jun 2018</td>
-                        <td>$78952</td>
-                      </tr>
-                      <tr>
-                        <td>Myrtie Lambert</td>
-                        <td>Ui design completed</td>
-                        <td>Cassinbury</td>
-                        <td>$36</td>
-                        <td>05 Nov 2018</td>
-                        <td>$36422</td>
-                      </tr>
-                      <tr>
-                        <td>Jacob Kennedy</td>
-                        <td>New project</td>
-                        <td>Cletaborough</td>
-                        <td>$314</td>
-                        <td>12 Jul 2018</td>
-                        <td>$34167</td>
-                      </tr>
-                      <tr>
-                        <td>Ernest Wade</td>
-                        <td>Levelled up</td>
-                        <td>West Fidelmouth</td>
-                        <td>$484</td>
-                        <td>08 Sep 2018</td>
-                        <td>$50862</td>
-                      </tr>
+                    <?php
+                    
+                        $sql = 'select * from reserved';
+                        $rslt = $conn->query($sql);
+                        while($row = $rslt->fetch_assoc()){
+                          $id = $row['customerid'];
+                          $sql_C = "select fname from customer where customerid='$id'";
+                          $rslt_c = $conn->query($sql_C);
+                          $row_c = $rslt_c->fetch_assoc();
+                    
+                          echo '<tr>
+                          <td>'.$row_c['fname'].'</td>
+                          <td>'.$row['arrival'].'</td>
+                          <td>'.$row['departure'].'</td>
+                          <td>'.$row['room'].'</td>
+                          <td>'.$row['paid'].'$ </td>
+                          </tr>';
+                        }
+                        ?>
                     </tbody>
                   </table>
                 </div>

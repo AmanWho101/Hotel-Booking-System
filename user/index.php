@@ -1,3 +1,16 @@
+<?php 
+session_start();
+include_once "../config.php";
+$login = '';
+$logout = '';
+if(empty($_SESSION['name'])){
+  $login = "LOGIN" ;
+}else{
+    $logout = 'LOGOUT';
+}
+
+?>
+
 <!doctype html>
 <html lang="en">
     <head>
@@ -24,7 +37,7 @@
             <div class="container">
                 <nav class="navbar navbar-expand-lg navbar-light">
                     <!-- Brand and toggle get grouped for better mobile display -->
-                    <a class="navbar-brand logo_h" href="index.html"><img src="image/Logo.png" alt=""></a>
+                    <a class="navbar-brand logo_h" href="index.php"><img src="image/Logo.png" alt=""></a>
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
@@ -33,9 +46,11 @@
                     <!-- Collect the nav links, forms, and other content for toggling -->
                     <div class="collapse navbar-collapse offset" id="navbarSupportedContent">
                         <ul class="nav navbar-nav menu_nav ml-auto">
-                            <li class="nav-item active"><a class="nav-link" href="index.html">Home</a></li> 
+                            <li class="nav-item active"><a class="nav-link" href="index.php">Home</a></li> 
                             
-                            <li class="nav-item"><a class="nav-link" href="accomodation.html">Accomodation</a></li>
+                            <li class="nav-item"><a class="nav-link" href="accomodation.php">Accomodation</a></li>
+                            <li class="nav-item"><a class="nav-link" href="login.php"><?php echo $login;?></a></li> 
+                            <li class="nav-item"><a class="nav-link" href="logout.php"><?php echo $logout;?></a></li>
                             
                         </ul>
                     </div> 
@@ -44,244 +59,36 @@
         </header>
         <!--================Header Area =================-->
         
-        <!--================Banner Area =================-->
-        
-        <!--================Banner Area =================-->
+       
         
         <!--================ Accomodation Area  =================-->
         <section class="accomodation_area section_gap">
             <div class="container">
                 <div class="section_title text-center">
-                    <h2 class="title_color">Book Room</h2>
-                   
-                    <div class="hotel_booking_area position">
-                    <div class="container">
-                        <div class="hotel_booking_table">
-                            <div class="col-md-3">
-                                <h2>Book<br> Room</h2>
-                            </div>
-                            <div class="col-md-12">
-                                <div class="boking_table">
-                                    <div class="row">
-                                        
-                                            <div class="col-12 ">
-                                                <div class="card">
-                                                  <div class="card-body">
-                                                    <h4 class="card-title">Fill Your Information </h4>
-                                                    <form class="form-sample">
-
-
-                                                        <div class="book_tabel_item">
-                                                            <div class="form-group">
-                                                                <div class='input-group date' id='datetimepicker11'>
-                                                                    <input type='text' class="form-control" placeholder="Arrival Date"/>
-                                                                    <span class="input-group-addon">
-                                                                        <i class="fa fa-calendar" aria-hidden="true"></i>
-                                                                    </span>
-                                                                </div>
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <div class='input-group date' id='datetimepicker1'>
-                                                                    <input type='text' class="form-control" placeholder="Departure Date"/>
-                                                                    <span class="input-group-addon">
-                                                                        <i class="fa fa-calendar" aria-hidden="true"></i>
-                                                                    </span>
-                                                                </div>
-                                                            </div>
-                                                            <div class="book_tabel_item">
-                                                                <div class="input-group">
-                                                                   
-                                                                        <input type="text" class="form-control"  value="room type" disabled>
-                                                                </div>
-                                                        </div>
-                                                    </div>
-                                                        <div class="book_tabel_item">
-                                                            <div class="input-group">
-                                                                <select class="wide">
-                                                                    <option data-display="Adult">none</option>
-                                                                    <option value="1"> above 45</option>
-                                                                    <option value="2">20 - 30</option>
-                                                                    
-                                                                </select>
-                                                            </div>
-                                                            <div class="book_tabel_item">
-                                                                <div class="input-group">
-                                                                    <input class="form-control" type="text" value="Tottal price" disabled >
-                                                                </div>
-                                                            
-                                                        </div>
-                                                    </div>
-                                                        <div class="book_tabel_item">
-                                                            <div class="input-group">
-                                                                <select class="wide">
-                                                                    <option data-display="Number of Rooms">Number of Rooms</option>
-                                                                    <option value="1">Room 01</option>
-                                                                    <option value="2">Room 02</option>
-                                                                    <option value="3">Room 03</option>
-                                                                </select>
-                                                            </div>
-            
-                                                            
-                                                        </div>
-
-
-
-
-
-                                                      <p class="card-description">
-                                                        Personal info
-                                                      </p>
-                                                      <div class="row">
-                                                        <div class="col-md-6">
-                                                          <div class="form-group row">
-                                                            <label class="col-sm-3 col-form-label">First Name</label>
-                                                            <div class="col-sm-9">
-                                                              <input type="text" class="form-control" />
-                                                            </div>
-                                                          </div>
-                                                        </div>
-                                                        <div class="col-md-6">
-                                                          <div class="form-group row">
-                                                            <label class="col-sm-3 col-form-label">Last Name</label>
-                                                            <div class="col-sm-9">
-                                                              <input type="text" class="form-control" />
-                                                            </div>
-                                                          </div>
-                                                        </div>
-                                                      </div>
-                                                      <div class="row">
-                                                        <div class="col-md-6">
-                                                          <div class="form-group row">
-                                                            <label class="col-sm-3 col-form-label">Gender</label>
-                                                            <div class="col-sm-9">
-                                                              <select class="form-control">
-                                                                <option>Male</option>
-                                                                <option>Female</option>
-                                                              </select>
-                                                            </div>
-                                                          </div>
-                                                        </div>
-                                                        <div class="col-md-6">
-                                                          <div class="form-group row">
-                                                            <label class="col-sm-3 col-form-label">Date of Birth</label>
-                                                            <div class="col-sm-9">
-                                                              <input class="form-control" placeholder="dd/mm/yyyy"/>
-                                                            </div>
-                                                          </div>
-                                                        </div>
-                                                      </div>
-                                                      <div class="row">
-                                                        <div class="col-md-6">
-                                                          <div class="form-group row">
-                                                            <label class="col-sm-3 col-form-label">Category</label>
-                                                            <div class="col-sm-9">
-                                                              <select class="form-control">
-                                                                <option>Category1</option>
-                                                                <option>Category2</option>
-                                                                <option>Category3</option>
-                                                                <option>Category4</option>
-                                                              </select>
-                                                            </div>
-                                                          </div>
-                                                        </div>
-                                                        <div class="col-md-6">
-                                                          <div class="form-group row">
-                                                            <label class="col-sm-3 col-form-label">Membership</label>
-                                                            <div class="col-sm-4">
-                                                              <div class="form-check">
-                                                                <label class="form-check-label">
-                                                                  <input type="radio" class="form-check-input" name="membershipRadios" id="membershipRadios1" value="" checked>
-                                                                  Free
-                                                                </label>
-                                                              </div>
-                                                            </div>
-                                                            <div class="col-sm-5">
-                                                              <div class="form-check">
-                                                                <label class="form-check-label">
-                                                                  <input type="radio" class="form-check-input" name="membershipRadios" id="membershipRadios2" value="option2">
-                                                                  Professional
-                                                                </label>
-                                                              </div>
-                                                            </div>
-                                                          </div>
-                                                        </div>
-                                                      </div>
-                                                      <p class="card-description">
-                                                        Address
-                                                      </p>
-                                                      <div class="row">
-                                                        <div class="col-md-6">
-                                                          <div class="form-group row">
-                                                            <label class="col-sm-3 col-form-label">Address 1</label>
-                                                            <div class="col-sm-9">
-                                                              <input type="text" class="form-control" />
-                                                            </div>
-                                                          </div>
-                                                        </div>
-                                                        <div class="col-md-6">
-                                                          <div class="form-group row">
-                                                            <label class="col-sm-3 col-form-label">State</label>
-                                                            <div class="col-sm-9">
-                                                              <input type="text" class="form-control" />
-                                                            </div>
-                                                          </div>
-                                                        </div>
-                                                      </div>
-                                                      <div class="row">
-                                                        <div class="col-md-6">
-                                                          <div class="form-group row">
-                                                            <label class="col-sm-3 col-form-label">Address 2</label>
-                                                            <div class="col-sm-9">
-                                                              <input type="text" class="form-control" />
-                                                            </div>
-                                                          </div>
-                                                        </div>
-                                                        <div class="col-md-6">
-                                                          <div class="form-group row">
-                                                            <label class="col-sm-3 col-form-label">Postcode</label>
-                                                            <div class="col-sm-9">
-                                                              <input type="text" class="form-control" />
-                                                            </div>
-                                                          </div>
-                                                        </div>
-                                                      </div>
-                                                      <div class="row">
-                                                        <div class="col-md-6">
-                                                          <div class="form-group row">
-                                                            <label class="col-sm-3 col-form-label">City</label>
-                                                            <div class="col-sm-9">
-                                                              <input type="text" class="form-control" />
-                                                            </div>
-                                                          </div>
-                                                        </div>
-                                                        <div class="col-md-6">
-                                                          <div class="form-group row">
-                                                            <label class="col-sm-3 col-form-label">Country</label>
-                                                            <div class="col-sm-9">
-                                                              <select class="form-control">
-                                                                <option>America</option>
-                                                                <option>Italy</option>
-                                                                <option>Russia</option>
-                                                                <option>Britain</option>
-                                                              </select>
-                                                            </div>
-                                                          </div>
-                                                        </div>
-                                                      </div>
-                                                      <a class="book_now_btn button_hover" href="#">Book Now</a>
-                                                    </form>
-                                                  </div>
-                                                </div>
-                                              </div>
-                                       
-                                   
-                                
-                            </div>
-                        </div>
-                    </div>
+                    <h2 class="title_color">Hotel Accomodation</h2>
+                    <p>We all live in an age that belongs to the young at heart. Life that is becoming extremely fast, </p>
                 </div>
-
-
+                <div class="row mb_30">
+                    <?php 
+                    $sql = "select * from room";
+                    $rst = $conn->query($sql);
+                    if($rst == TRUE){
+                        while($row = $rst->fetch_assoc()){
+                            echo ' <div class="col-lg-3 col-sm-6">
+                            <div class="accomodation_item text-center">
+                                <div class="hotel_img">
+                                    <img src="../dashboard/Himages/'.$row['images'].'" alt="">
+                                    <a href="#" class="btn theme_btn button_hover">Book Now</a>
+                                </div>
+                                <a href="#"><h4 class="sec_h4">'.$row['roomtype'].'</h4></a>
+                                <h5>'.$row['roomPrice'].'<small>/night</small></h5>
+                            </div>
+                        </div>';        
+                        }
+                    }
+                     ?>
+                   
+                    </div>
                 </div>
             </div>
         </section>

@@ -1,3 +1,50 @@
+<?php
+include_once "../../config.php";
+$alert = "";
+
+session_start();
+if (!empty($_SESSION['name'])) {
+  $username = $_SESSION['name'];
+
+
+  if ($_SERVER['REQUEST_METHOD'] == "POST") {
+    if (isset($_POST['submit'])) {
+      $uname = $_POST['uname'];
+      $lname = $_POST['lname'];
+      $country = $_POST['country'];
+      $city = $_POST['city'];
+      $email = $_POST['email'];
+      $phone = $_POST['phone'];
+      $password = $_POST['password'];
+
+      $sql = "select recepid from reception";
+      $rslt_r = $conn->query($sql);
+
+      if ($rslt_r->num_rows > 0) {
+        while ($row = $rslt_r->fetch_assoc()) {
+
+          $recepid = $row['recepid'];
+          $sql = "INSERT INTO customer (recepid,fname,lname,country,city,email,phone,passwords)
+                VALUES ('$recepid', '$uname','$lname','$country','$city','$email','$phone','$password')";
+          $rslt_in = $conn->query($sql);
+          if ($rslt_in == TRUE) {
+            $alert = '<div class="alert alert-primary" role="alert">
+                Data created succesfull!
+              </div>';
+          } else {
+            $alert = '<div class="alert alert-warning" role="alert">
+                ' . die($conn->error) . '
+              </div>';
+          }
+        }
+      }
+    }
+  }
+} else {
+  header('location:index.php');
+}
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -24,8 +71,8 @@
     <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
       <div class="navbar-brand-wrapper d-flex justify-content-center">
         <div class="navbar-brand-inner-wrapper d-flex justify-content-between align-items-center w-100">
-          <a class="navbar-brand brand-logo" href="../index.html"><img src="../images/logo.svg" alt="logo" /></a>
-          <a class="navbar-brand brand-logo-mini" href="../index.html"><img src="../images/logo-mini.svg" alt="logo" /></a>
+          <a class="navbar-brand brand-logo" href="../reception.php"><img src="../images/logo.svg" alt="logo" /></a>
+          <a class="navbar-brand brand-logo-mini" href="../reception.php"><img src="../images/logo-mini.svg" alt="logo" /></a>
           <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
             <span class="mdi mdi-sort-variant"></span>
           </button>
@@ -37,11 +84,11 @@
           <li class="nav-item nav-profile dropdown">
             <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" id="profileDropdown">
 
-              <span class="nav-profile-name">Louis Barnett</span>
+              <span class="nav-profile-name"><?php echo $username; ?></span>
             </a>
             <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
 
-              <a class="dropdown-item">
+              <a href="../logout.php" class="dropdown-item">
                 <i class="mdi mdi-logout text-primary"></i>
                 Logout
               </a>
@@ -59,60 +106,14 @@
       <nav class="sidebar sidebar-offcanvas" id="sidebar">
         <ul class="nav">
           <li class="nav-item">
-            <a class="nav-link" href="../index.html">
+            <a class="nav-link" href="../reception.php">
               <i class="mdi mdi-home menu-icon"></i>
               <span class="menu-title">Dashboard</span>
             </a>
           </li>
-
-
-
-          <li class="nav-item">
-            <a class="nav-link" href="comment.php">
-              <i class="mdi mdi-comment-text menu-icon"></i>
-              <span class="menu-title">View Comment</span>
-            </a>
-          </li>
-
         </ul>
       </nav>
-      <?php
-      include_once "../../config.php";
-      $alert = "";
-      if ($_SERVER['REQUEST_METHOD'] == "POST") {
-        if (isset($_POST['submit'])) {
-          $uname = $_POST['uname'];
-          $lname = $_POST['lname'];
-          $country = $_POST['country'];
-          $city = $_POST['city'];
-          $email = $_POST['email'];
-          $phone = $_POST['phone'];
-          $password = $_POST['password'];
 
-          $sql = "select recepid from reception";
-          $rslt_r = $conn->query($sql);
-          
-          if ($rslt_r -> num_rows > 0) {
-            while ($row = $rslt_r -> fetch_assoc()) {
-
-              $recepid = $row['recepid'];
-              $sql = "INSERT INTO customer (recepid,fname,lname,country,city,email,phone,passwords)
-                VALUES ('$recepid', '$uname','$lname','$country','$city','$email','$phone','$password')";
-              $rslt_in = $conn->query($sql);
-              if($rslt_in == TRUE){
-                $alert = '<div class="alert alert-primary" role="alert">
-                Data created succesfull!
-              </div>';
-              }else{ $alert = '<div class="alert alert-warning" role="alert">
-                '.die($conn ->error).'
-              </div>';
-              }
-
-            }
-          }
-        }
-      }
-      ?>
       <!-- partial -->
       <div class="main-panel">
         <div class="content-wrapper">
@@ -121,7 +122,7 @@
               <div class="card">
                 <div class="card-body">
                   <h4 class="card-title">Register Customers Form</h4>
-                    <label><?php echo $alert; ?></label>
+                  <label><?php echo $alert; ?></label>
                   <form class="forms-sample" method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
                     <div class="form-group">
                       <label for="exampleInputUsername1">Username</label>

@@ -1,72 +1,83 @@
-
- <?php
-
+<?php
 include_once "../../config.php";
 
-$id = 15;
-$sql = "select * from `room` where roomid='$id'";
-$rslt = mysqli_query($conn, $sql);
+$id = '';
+session_start();
+if(!empty($_SESSION['name'])){
+  $username = $_SESSION['name'];
 
-$row = mysqli_fetch_assoc($rslt);
+ if(!empty($_GET['updateid'])){
+  $id = $_GET['updateid'];
+ }
+
+    $sql = "select * from `room` where roomid='$id'";
+    $rslt = mysqli_query($conn, $sql);
+
+    $row = mysqli_fetch_assoc($rslt);
 
 
-$roomtype = $row['roomtype'];
-$roomNo = $row['roomNo'];
-$roomFloor = $row['roomFloor'];
-$roomprice = $row['roomPrice'];
-$image = $row['images'];
+    $roomtype = $row['roomtype'];
+    $roomNo = $row['roomNo'];
+    $roomFloor = $row['roomFloor'];
+    $roomprice = $row['roomPrice'];
+    $image = $row['images'];
 
 
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    if (isset($_POST["submit"])) {
-        $roomt = $_POST["roomtype"];
-        $roomn = $_POST["roomn"];
-        $roomf = $_POST["roomf"];
-        $roomp = $_POST["roomp"];
-        $roomImg = $_FILES['img']['name'];
-        $target_dir = "../Himages/";
-        $img_file = $target_dir . basename($roomImg);
-        $img_filetype = strtolower(pathinfo($img_file, PATHINFO_EXTENSION));
-        $img_file_tmp = $_FILES["img"]["tmp_name"];
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        if (isset($_POST["submit"])) {
+            
+            $roomt = $_POST["roomtype"];
+            $roomn = $_POST["roomn"];
+            $roomf = $_POST["roomf"];
+            $roomp = $_POST["roomp"];
+            $roomImg = $_FILES['img']['name'];
+            $target_dir = "../Himages/";
+            $img_file = $target_dir . basename($roomImg);
+            $img_filetype = strtolower(pathinfo($img_file, PATHINFO_EXTENSION));
+            $img_file_tmp = $_FILES["img"]["tmp_name"];
 
-        $sql = "select adminid from admin";
-        $rslt = $conn->query($sql);
-        if ($rslt->num_rows > 0) {
-            if ($row = $rslt->fetch_assoc()) {
-                $adminid = $row['adminid'];
-                if (!empty($id)) {
-                    $sql = "UPDATE `room` SET roomid = $id, adminid = '$adminid', roomtype = '$roomt', 
+            $sql = "select adminid from admin";
+            $rslt = $conn->query($sql);
+           
+            if ($rslt->num_rows > 0) {
+                if ($row = $rslt->fetch_assoc()) {
+                    $adminid = $row['adminid'];
+                   
+                    if(!empty($id)){
+                        $sql = "UPDATE room SET roomid = $id, adminid = '$adminid', roomtype = '$roomt', 
                     roomNo = '$roomn', roomFloor = '$roomf', roomPrice = '$roomp', images = '$roomImg' WHERE roomid = '$id'";
-                    $rslt = $conn->query($sql);
-
-                    // time to copy the image to new destination
-                    if (file_exists($img_file)) {
-                        // if the image exist in the folder
-                        $alert = '<div class="alert alert-primary" role="alert">
+                        $rslt = $conn->query($sql);
+                        
+                        // time to copy the image to new destination
+                        if (file_exists($img_file)) {
+                            // if the image exist in the folder
+                            $alert = '<div class="alert alert-primary" role="alert">
                                 Data created succesfull!
                               </div>';
-                              header('location: Add_room.php');
-                        mysqli_close($conn);
-                        
-                    } else {
-                        // if the image doesnt exist in the folder
-                        if (move_uploaded_file($img_file_tmp, $img_file)) {
-                            $alert = '<div class="alert alert-primary" role="alert">
+
+                            mysqli_close($conn);
+                        } else {
+                            // if the image doesnt exist in the folder
+                            if (move_uploaded_file($img_file_tmp, $img_file)) {
+                                $alert = '<div class="alert alert-primary" role="alert">
                                     Data created succesfull!
                                   </div>';
-                                  header('location: Add_room.php');
-                            mysqli_close($conn);
-                            
+
+                                mysqli_close($conn);
+                            }
                         }
-                        
+                        header('location:admin.php');
+                    } else {
+                       $id = "room id is empty";
                     }
-                } else {
-                    echo "room id is empty";
+                    
                 }
             }
         }
-         }
+    }
+} else {
+    header('location:index.php');
 }
 
 ?>
@@ -98,8 +109,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
             <div class="navbar-brand-wrapper d-flex justify-content-center">
                 <div class="navbar-brand-inner-wrapper d-flex justify-content-between align-items-center w-100">
-                    <a class="navbar-brand brand-logo" href="../index.html"><img src="../images/logo.svg" alt="logo" /></a>
-                    <a class="navbar-brand brand-logo-mini" href="../index.html"><img src="../images/logo-mini.svg" alt="logo" /></a>
+                    <a class="navbar-brand brand-logo" href="../admin.php"><img src="../images/logo.svg" alt="logo" /></a>
+                    <a class="navbar-brand brand-logo-mini" href="../admin.php"><img src="../images/logo-mini.svg" alt="logo" /></a>
                     <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
                         <span class="mdi mdi-sort-variant"></span>
                     </button>
@@ -111,14 +122,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <li class="nav-item nav-profile dropdown">
                         <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" id="profileDropdown">
 
-                            <span class="nav-profile-name">Louis Barnett</span>
+                            <span class="nav-profile-name"><?php echo $username, $id; ?></span>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
-                            <a class="dropdown-item">
-                                <i class="mdi mdi-settings text-primary"></i>
-                                Settings
-                            </a>
-                            <a class="dropdown-item">
+
+                            <a href="../logout.php" class="dropdown-item">
                                 <i class="mdi mdi-logout text-primary"></i>
                                 Logout
                             </a>
@@ -136,7 +144,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <nav class="sidebar sidebar-offcanvas" id="sidebar">
                 <ul class="nav">
                     <li class="nav-item">
-                        <a class="nav-link" href="../index.html">
+                        <a class="nav-link" href="../admin.php">
                             <i class="mdi mdi-home menu-icon"></i>
                             <span class="menu-title">Dashboard</span>
                         </a>
@@ -148,12 +156,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             <span class="menu-title">Add Receptionist</span>
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="update_receptionist.php">
-                            <i class="mdi mdi-pen menu-icon"></i>
-                            <span class="menu-title">Update Receptionist</span>
-                        </a>
-                    </li>
+
                     <li class="nav-item">
                         <a class="nav-link" href="Add_room.php">
                             <i class="mdi mdi-plus">
@@ -170,7 +173,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
 
-           
+
 
             <!-- partial -->
             <div class="main-panel">
@@ -234,30 +237,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                                             <div class="input-group col-xs-12">
                                                 <div>
-
-
-
-
                                                     <div class="input-group col-xs-12">
-
-
                                                         <span class="input-group-append">
                                                             <input type="file" name="img" accept="image/*" onchange="loadFile(event)" class="btn btn-primary" required />
                                                         </span>
                                                     </div>
                                                 </div>
-
-
-
-
-
-
                                             </div>
                                         </div>
-
-
+                                      
                                         <button name="submit" type="submit" class="btn btn-primary me-2">Submit</button>
-
                                     </form>
                                 </div>
                             </div>
@@ -281,15 +270,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </div>
     <!-- container-scroller -->
     <!-- plugins:js -->
-    <script src="../../vendors/base/vendor.bundle.base.js"></script>
+    <script src="../vendors/base/vendor.bundle.base.js"></script>
     <!-- endinject -->
     <!-- inject:js -->
-    <script src="../../js/off-canvas.js"></script>
-    <script src="../../js/hoverable-collapse.js"></script>
-    <script src="../../js/template.js"></script>
+    <script src="../js/off-canvas.js"></script>
+    <script src="../js/hoverable-collapse.js"></script>
+    <script src="../js/template.js"></script>
     <!-- endinject -->
     <!-- Custom js for this page-->
-    <script src="../../js/file-upload.js"></script>
+    <script src="../js/file-upload.js"></script>
     <!-- End custom js for this page-->
 </body>
 
