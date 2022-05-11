@@ -48,7 +48,7 @@ if(empty($_SESSION['name'])){
                         <ul class="nav navbar-nav menu_nav ml-auto">
                             <li class="nav-item active"><a class="nav-link" href="index.php">Home</a></li> 
                             
-                            <li class="nav-item"><a class="nav-link" href="accomodation.php">Accomodation</a></li>
+                      
                             <li class="nav-item"><a class="nav-link" href="login.php"><?php echo $login;?></a></li> 
                             <li class="nav-item"><a class="nav-link" href="logout.php"><?php echo $logout;?></a></li>
                             
