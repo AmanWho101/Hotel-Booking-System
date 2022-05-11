@@ -196,7 +196,7 @@ if(!empty($_SESSION['name'])){
                           <td>'.$row_c['fname'].'</td>
                           <td>'.$row['arrival'].'</td>
                           <td>'.$row['departure'].'</td>
-                          <td>'.$row['room'].'</td>
+                          <td>'.$row['roomid'].'</td>
                           <td>'.$row['paid'].'$ </td>
                           </tr>';
                         }

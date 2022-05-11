@@ -78,9 +78,9 @@ if(empty($_SESSION['name'])){
                             <div class="accomodation_item text-center">
                                 <div class="hotel_img">
                                     <img src="../dashboard/Himages/'.$row['images'].'" alt="">
-                                    <a href="#" class="btn theme_btn button_hover">Book Now</a>
+                                    <a href="book.php?roomtype='.$row['roomid'].'" class="btn theme_btn button_hover">Book Now</a>
                                 </div>
-                                <a href="#"><h4 class="sec_h4">'.$row['roomtype'].'</h4></a>
+                                <a href="book.php?roomtype='.$row['roomid'].'"><h4 class="sec_h4">'.$row['roomtype'].'</h4></a>
                                 <h5>'.$row['roomPrice'].'<small>/night</small></h5>
                             </div>
                         </div>';        

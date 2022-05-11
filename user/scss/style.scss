@@ -1,87 +1,128 @@
-/*----------------------------------------------------
-@File: Default Styles
-@Author: Rocky
-@URL: http://wethemez.com
-Author E-mail: rockybd1995@gmail.com
+/*------------------------------------------------------------------
+ [Master Stylesheet]
 
-This file contains the styling for the actual theme, this
-is the file you need to edit to change the look of the
-theme.
----------------------------------------------------- */
+  Project:	Majestic Admin
+  Version:	1.1.0
+-------------------------------------------------------------------*/
 
-/*=====================================================================
-@Template Name: Royal Hotel
-@Author: Rocky
-@Developed By: Rocky
-@Developer URL: http://rocky.wethemez.com
-Author E-mail: rockybd1995@gmail.com
 
-@Default Styles
 
-Table of Content:
-01/ Variables
-02/ predefin
-03/ header
-04/ button
-05/ banner
-06/ breadcrumb
-07/ about
-08/ team
-09/ project 
-10/ price 
-11/ team 
-12/ blog 
-13/ video  
-14/ features  
-15/ career  
-16/ contact 
-17/ footer
+/*-------------------------------------------------------------------
+  ===== Table of Contents =====
 
-=====================================================================*/ 
+  * Bootstrap functions
+  * Bootstrap variables
+  * Template variables
+  * SCSS Compass Functions
+  * Boostrap Main SCSS
+  * Template mixins
+    + Animation Mixins
+    + Button Mixins
+    + Miscellaneous Mixins
+    + Cards Mixins
+    + Color Functions Mixins
+    + Badge Mixins
+    + Blockquote Mixins
+    
+  * Core Styles
+    + Reset Styles
+    + Fonts
+    + Functions
+    + Backgrounds
+    + Typography
+    + Miscellaneous
+    + Footer
+    + Utilities
+    + Demo styles
+  * Components
+    + Buttons
+    + Badges
+    + Bootstrap Progress
+    + Cards
+    + Checkboxes and Radios
+    + Dropdowns
+    + Forms
+    + Icons
+    + Lists
+    + Tables
+  * Plugin overrides
+    + Data-tables  
+  * Landing screens
+    + Auth
+  * Layout
+    + Vertical wrapper
+    + Sidebar
+    + Navbar
+    + Layouts
+-------------------------------------------------------------------*/
 
-/*----------------------------------------------------*/
+
+/*-------------------------------------------------------------------*/
+/* === Import Bootstrap functions and variables === */
+@import "../node_modules/bootstrap/scss/functions";
+@import "../node_modules/bootstrap/scss/variables";
+
+/*-------------------------------------------------------------------*/
+/* === Import template variables === */
 @import "variables";
-/*---------------------------------------------------- */ 
 
-/*----------------------------------------------------*/
-@import "predefine";
-/*---------------------------------------------------- */
+/*-------------------------------------------------------------------*/
+/* === SCSS Compass Functions === */
+@import "../node_modules/compass-mixins/lib/compass";
+@import "../node_modules/compass-mixins/lib/animate";
 
-/*----------------------------------------------------*/
-@import "button";
-/*---------------------------------------------------- */
+/*-------------------------------------------------------------------*/
+/* === Boostrap Main SCSS === */
+@import "../node_modules/bootstrap/scss/bootstrap";
 
-/*----------------------------------------------------*/
-@import "header";
-/*---------------------------------------------------- */
+/*-------------------------------------------------------------------*/
+/* === Template mixins === */
+@import "mixins/misc";
+@import "mixins/animation";
+@import "mixins/badges";
+@import "mixins/blockqoute";
+@import "mixins/buttons";
+@import "mixins/cards";
 
-/*----------------------------------------------------*/
-@import "banner";
-/*---------------------------------------------------- */
-
-/*----------------------------------------------------*/
-@import "accomodation";
-/*---------------------------------------------------- */
-
-/*----------------------------------------------------*/
-@import "testimonial";
-/*---------------------------------------------------- */
-
-/*----------------------------------------------------*/
-@import "blog";
-/*---------------------------------------------------- */
-
-/*----------------------------------------------------*/
-@import "contact";
-/*---------------------------------------------------- */
-
-/*----------------------------------------------------*/
-@import "elements";
-/*---------------------------------------------------- */
-
-/*----------------------------------------------------*/
+/*-------------------------------------------------------------------*/
+/* === Core Styles === */
+@import "reset";
+@import "fonts";
+@import "functions";
+@import "background";
+@import "typography";
+@import "misc";
 @import "footer";
-/*---------------------------------------------------- */
+@import "utilities";
+@import "demo";
+
+/*-------------------------------------------------------------------*/
+/* === Components === */
+@import "components/buttons";
+@import "components/badges";
+@import "components/bootstrap-progress";
+@import "components/cards";
+@import "components/checkbox-radio";
+@import "components/dropdown";
+@import "components/forms";
+@import "components/icons";
+@import "components/lists";
+@import "components/tables";
+
+/*-------------------------------------------------------------------*/
 
 
+/* === Plugin overrides === */
+@import "components/plugin-overrides/data-tables";
 
+/*-------------------------------------------------------------------*/
+
+
+/* === Landing screens === */
+@import "landing-screens/auth";
+
+
+@import "vertical-wrapper";
+@import "sidebar";
+@import "navbar";
+@import "layouts";
