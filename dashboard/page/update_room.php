@@ -24,7 +24,7 @@ if(!empty($_SESSION['name'])){
 
 
 
-    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+ 
         if (isset($_POST["submit"])) {
             
             $roomt = $_POST["roomtype"];
@@ -67,7 +67,7 @@ if(!empty($_SESSION['name'])){
                                 mysqli_close($conn);
                             }
                         }
-                        header('location:admin.php');
+                        header('location:../admin.php');
                     } else {
                        $id = "room id is empty";
                     }
@@ -76,7 +76,7 @@ if(!empty($_SESSION['name'])){
             }
         }
     }
-} else {
+ else {
     header('location:index.php');
 }
 
@@ -184,7 +184,7 @@ if(!empty($_SESSION['name'])){
                                 <div class="card-body">
                                     <h4 class="card-title">Add Room</h4>
 
-                                    <form enctype="multipart/form-data" method="POST" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>">
+                                    <form enctype="multipart/form-data" method="POST" >
                                         <div class="form-group">
                                             <label for="exampleSelectGender">Room Type</label>
                                             <select name="roomtype" class="form-control" required />

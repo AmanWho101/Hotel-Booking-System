@@ -6,7 +6,7 @@ $login = '';
 $logout = '';
 $id = '';
 if (empty($_SESSION['name'])) {
-    $login = "LOGIN";
+    header('location:index.php');
 } else {
     $logout = 'LOGOUT';
 }

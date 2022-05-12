@@ -28,7 +28,7 @@ $row = mysqli_fetch_assoc($rslt);
 
 
 
-if($_SERVER["REQUEST_METHOD"]== "POST"){
+
   if(isset($_POST["submit"])){
     $uname = $_POST["uname"];
     $lname = $_POST["lname"];
@@ -44,7 +44,7 @@ if($_SERVER["REQUEST_METHOD"]== "POST"){
           
           $sql = "UPDATE reception SET recepid = '$id', adminid = '$adminid', fname = '$uname', lname = '$lname', email = '$email', passwords = '$password' WHERE recepid = '$id'";
           $rslt = $conn->query($sql);
-          header('location:update_receptionist.php');
+          header('location:../admin.php');
         }else{
           echo "receptionist id is empty";
         }
@@ -52,7 +52,7 @@ if($_SERVER["REQUEST_METHOD"]== "POST"){
     }
 
   }
-}}else{
+}else{
   header('location:index.php');
 }
 
@@ -158,7 +158,7 @@ if($_SERVER["REQUEST_METHOD"]== "POST"){
                 <div class="card-body">
                   <h4 class="card-title">Register Receptionist</h4>
             
-                  <form <?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?> method="POST">
+                  <form method="POST">
                     <div class="form-group">
                       <label >Username</label>
                       <input name="uname" type="text" class="form-control" value="<?php echo $fname; ?>" />
