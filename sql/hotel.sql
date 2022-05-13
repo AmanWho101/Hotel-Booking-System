@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: May 07, 2022 at 02:32 PM
+-- Generation Time: May 13, 2022 at 09:32 AM
 -- Server version: 5.7.31
 -- PHP Version: 7.3.21
 
@@ -32,7 +32,7 @@ CREATE TABLE IF NOT EXISTS `admin` (
   `adminid` int(11) NOT NULL AUTO_INCREMENT,
   `fname` varchar(100) NOT NULL,
   `email` varchar(100) NOT NULL,
-  `password` varchar(100) NOT NULL,
+  `passwords` varchar(100) NOT NULL,
   PRIMARY KEY (`adminid`)
 ) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
 
@@ -40,22 +40,8 @@ CREATE TABLE IF NOT EXISTS `admin` (
 -- Dumping data for table `admin`
 --
 
-INSERT INTO `admin` (`adminid`, `fname`, `email`, `password`) VALUES
+INSERT INTO `admin` (`adminid`, `fname`, `email`, `passwords`) VALUES
 (1, 'admin', 'admin@gmail.com', 'admin');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `comment`
---
-
-DROP TABLE IF EXISTS `comment`;
-CREATE TABLE IF NOT EXISTS `comment` (
-  `comentid` int(11) NOT NULL AUTO_INCREMENT,
-  `customerid` int(11) NOT NULL,
-  `message` text NOT NULL,
-  PRIMARY KEY (`comentid`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -75,28 +61,21 @@ CREATE TABLE IF NOT EXISTS `customer` (
   `phone` varchar(100) NOT NULL,
   `passwords` varchar(100) NOT NULL,
   PRIMARY KEY (`customerid`)
-) ENGINE=MyISAM AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4;
+) ENGINE=MyISAM AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `customer`
 --
 
 INSERT INTO `customer` (`customerid`, `recepid`, `fname`, `lname`, `country`, `city`, `email`, `phone`, `passwords`) VALUES
-(12, 1, 'trust ', 'your', 'code', 'Adama', 'amleaz2005@gmail.com', '+251923837212', 'password');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `ratting`
---
-
-DROP TABLE IF EXISTS `ratting`;
-CREATE TABLE IF NOT EXISTS `ratting` (
-  `rattingid` int(11) NOT NULL AUTO_INCREMENT,
-  `customerid` int(11) NOT NULL,
-  `rattingNo` int(50) NOT NULL,
-  PRIMARY KEY (`rattingid`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
+(12, 1, 'trust ', 'your', 'code', 'Adama', 'amleaz2005@gmail.com', '+251923837212', 'password'),
+(13, 3, 'customer1', 'Neguse1', 'Ethiopia', 'Adama', 'amleaz2005@gmail.com', '+251923837212', '12345'),
+(14, 3, 'customer5', 'Neguse5', 'Ethiopia', 'Adama', 'amleaz2005@gmail.com', '+251923837212', '123456'),
+(15, 3, 'customer5', 'cust', 'Ethiopia', 'Adama', 'amleaz2005@gmail.com', '+251923837212', '12345'),
+(16, 4, 'customer5', 'cust', 'Ethiopia', 'Adama', 'amleaz2005@gmail.com', '+251923837212', '12345'),
+(17, 3, 'hana', 'legese', 'Ethiopia', 'Adama', 'hana@gmail.com', '+251931250164', '123456'),
+(18, 4, 'hana', 'legese', 'Ethiopia', 'Adama', 'hana@gmail.com', '+251931250164', '123456'),
+(19, 5, 'hana', 'legese', 'Ethiopia', 'Adama', 'hana@gmail.com', '+251931250164', '123456');
 
 -- --------------------------------------------------------
 
@@ -113,30 +92,16 @@ CREATE TABLE IF NOT EXISTS `reception` (
   `email` varchar(100) NOT NULL,
   `passwords` varchar(100) NOT NULL,
   PRIMARY KEY (`recepid`)
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
+) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `reception`
 --
 
 INSERT INTO `reception` (`recepid`, `adminid`, `fname`, `lname`, `email`, `passwords`) VALUES
-(1, 1, 'receptionist ', 'updated', 'amleaz2005@gmail.com', '123456');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `reply`
---
-
-DROP TABLE IF EXISTS `reply`;
-CREATE TABLE IF NOT EXISTS `reply` (
-  `replyid` int(11) NOT NULL AUTO_INCREMENT,
-  `comentid` int(11) NOT NULL,
-  `recepid` int(11) NOT NULL,
-  `adminid` int(11) NOT NULL,
-  `replymessage` text NOT NULL,
-  PRIMARY KEY (`replyid`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
+(4, 1, 'receptionist 12', 'data clerk12', 'amleaz2005@gmail.com', '12345'),
+(3, 1, 'receptionist2', 'data clerk2', 'amleaz2005@gmail.com', '123456'),
+(5, 1, 'receptionist8', 'data clerk8', 'amleaz2005@gmail.com', '123456');
 
 -- --------------------------------------------------------
 
@@ -146,14 +111,26 @@ CREATE TABLE IF NOT EXISTS `reply` (
 
 DROP TABLE IF EXISTS `reserved`;
 CREATE TABLE IF NOT EXISTS `reserved` (
-  `reservationid` int(11) NOT NULL,
+  `reservationid` int(11) NOT NULL AUTO_INCREMENT,
   `customerid` int(11) NOT NULL,
-  `recepid` int(11) NOT NULL,
   `arrival` varchar(300) NOT NULL,
   `departure` varchar(300) NOT NULL,
-  `room` int(50) NOT NULL,
-  `paid` int(50) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
+  `roomid` int(50) NOT NULL,
+  `paid` int(50) NOT NULL,
+  PRIMARY KEY (`reservationid`)
+) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `reserved`
+--
+
+INSERT INTO `reserved` (`reservationid`, `customerid`, `arrival`, `departure`, `roomid`, `paid`) VALUES
+(1, 13, '2022-05-10 13:45', '2022-05-11 10:50', 20, 5000),
+(2, 13, '2022-05-10 13:45', '2022-05-11 10:50', 20, 5000),
+(3, 13, '2022-05-10 13:45', '2022-05-11 10:50', 13, 1000),
+(4, 14, '2022-05-10 13:45', '2022-05-19 14:50', 13, 1000),
+(5, 17, '2022-05-16 12:10', '2022-05-19 14:10', 20, 5000),
+(6, 17, '2022-05-10 13:45', '2022-05-19 14:10', 19, 100);
 
 -- --------------------------------------------------------
 
@@ -171,16 +148,17 @@ CREATE TABLE IF NOT EXISTS `room` (
   `roomPrice` int(11) NOT NULL,
   `images` varchar(100) NOT NULL,
   PRIMARY KEY (`roomid`)
-) ENGINE=MyISAM AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4;
+) ENGINE=MyISAM AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `room`
 --
 
 INSERT INTO `room` (`roomid`, `adminid`, `roomtype`, `roomNo`, `roomFloor`, `roomPrice`, `images`) VALUES
-(15, 1, 'Double_Delux_Room', 2, 52, 5000, 'testtimonial-1.jpg'),
-(14, 1, 'Honeymoon_Suit', 2, 5, 1000, 'room4.jpg'),
-(13, 1, 'Single_Deluxe_Room', 1, 1, 1000, 'room4.jpg');
+(20, 1, 'Single_Deluxe_Room', 2, 1, 5000, 'room2.jpg'),
+(13, 1, 'Single_Deluxe_Room', 1, 1, 1000, 'room4.jpg'),
+(19, 1, 'Economy_Room', 2, 1, 100, 'room1.jpg'),
+(23, 1, 'Honeymoon_Suit', 2, 1, 1000, 'about_bg.jpg');
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
