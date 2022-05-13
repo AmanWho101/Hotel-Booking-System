@@ -1,11 +1,16 @@
 <?php 
 session_start();
 include_once "../config.php";
+$username = '';
 if(!empty($_SESSION['name'])){
   $username = $_SESSION['name'];
 }else{
   header('location:index.php');
 }
+$sql_u = "select * from customer where fname='$username'"; 
+$rsl_u = $conn->query($sql_u);
+$row_u = $rsl_u->fetch_assoc();
+$idu=$row_u['customerid'];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -79,11 +84,13 @@ if(!empty($_SESSION['name'])){
                     <tbody>
                     <?php
                     
-                        $sql = 'select * from reserved';
+                        $sql = "select * from reserved where customerid='$idu'";
                         $rslt = $conn->query($sql);
-                        $sql_r = "select * from room";
-                        $rslt_r = $conn->query($sql_r);
+                       
                         while($row = $rslt->fetch_assoc()){
+                          $rid = $row['roomid'];
+                          $sql_r = "select * from room where roomid='$rid'";
+                          $rslt_r = $conn->query($sql_r);
                           $row_r = $rslt_r->fetch_assoc(); 
                           $id = $row['customerid'];
                           $sql_C = "select fname from customer where customerid='$id'";
